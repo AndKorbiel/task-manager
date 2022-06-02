@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+
+.tasks-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 30px;
+  row-gap: 30px;
+  padding: 0 30px;
+
+  div {
+    box-shadow: 1px 1px 4px grey;
+    padding: 15px;
+  }
+
+  img {
+    max-width: 99%;
+    max-height: 200px;
+  }
+}
