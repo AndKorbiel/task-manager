@@ -1,17 +1,23 @@
 import "./App.scss";
 import About from "./views/About";
 import Home from "./views/Home";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import SingleTaskPage from "./views/SingleTaskPage";
 
 function App() {
   return (
     <div className="App">
-      <Link to="/">Home</Link>
-      <Link to="/about">See About</Link>
-      <hr />
+      <Navbar
+        links={[
+          { link: "/", label: "Home" },
+          { link: "/about", label: "See About" },
+        ]}
+      />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="task/:id" element={<SingleTaskPage />} />
       </Routes>
     </div>
   );
