@@ -36,3 +36,20 @@
     background: lightgrey;
   }
 }
+
+.new-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  align-content: center;
+
+  div {
+    margin: 5px 0;
+  }
+}
+
+.shadow {
+  box-shadow: 1px 1px 4px grey;
+  padding: 15px;
+  margin-top: 30px;
+}

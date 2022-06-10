@@ -1,27 +1,31 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { increment } from "../state/reducers";
+import { getTasks } from "../state/reducers";
+import SingleTaskManager from "../components/SingleTaskManager";
 
 function SingleTaskPage() {
   const params = useParams();
   const dispatch = useDispatch();
-  const tasks = [];
-  const countFromStore = useSelector((state) => state.counter.value);
+  const tasksFromStore = useSelector((state) => state.tasks.list);
+  const isLoading = useSelector((state) => state.tasks.loading);
 
   useEffect(() => {
     console.log(params.id);
+    dispatch(getTasks());
   }, []);
 
   const getTaskById = () => {
-    return tasks.filter((task) => task.id === params.id)[0];
+    return tasksFromStore.filter((task) => task.id === parseFloat(params.id));
   };
 
   return (
     <div>
-      <h2>HellO!</h2>
-      <h3>{countFromStore}</h3>
-      <button onClick={() => dispatch(increment())}>Click me!</button>
+      <h2>HelldsaO!</h2>
+      <div className="tasks-list">
+        {!isLoading &&
+          getTaskById().map((task) => <SingleTaskManager data={task} />)}
+      </div>
     </div>
   );
 }
