@@ -1,16 +1,40 @@
 import { useEffect, useState } from "react";
 import FilterBars from "../components/FiltersBar";
 import SingleTask from "../components/SingleTask";
+import { useDispatch, useSelector } from "react-redux";
+import { getTasks } from "../state/reducers";
 
 function Home() {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const tasksFromStore = useSelector((state) => state.tasks.list);
+  const isLoading = useSelector((state) => state.tasks.loading);
   const [selectedTasks, selectTasks] = useState([]);
+  const [activeFilter, setActiveFilter] = useState(false);
   const [selectedFilters, setFilters] = useState([]);
 
+  useEffect(() => {
+    dispatch(getTasks());
+  }, []);
+
+  const searchByKeyword = (e) => {
+    const temp = [...tasksFromStore];
+    const keyword = e.target.value;
+    let filter = true;
+    const res = temp.filter((task) =>
+      task.title.toLowerCase().includes(keyword.toLowerCase())
+    );
+    if (keyword.length === 0) {
+      filter = false;
+    }
+    setActiveFilter(filter);
+    selectTasks([...res]);
+  };
+
   const applyFilter = (selectedStatus) => {
-    const temp = [...tasks];
+    const temp = [...tasksFromStore];
     let filters = [...selectedFilters];
     let res = [];
+    let filter = true;
 
     if (selectedFilters.indexOf(selectedStatus) > -1) {
       filters = filters.filter((el) => el !== selectedStatus);
@@ -23,43 +47,35 @@ function Home() {
       res = [...res, ...result];
     });
 
-    if (selectedStatus === false) {
-      res = tasks;
+    if (selectedStatus === false || filters.length === 0) {
+      res = tasksFromStore;
       filters = [];
+      filter = false;
     }
 
+    setActiveFilter(filter);
     setFilters(filters);
     selectTasks([...res]);
   };
 
-  const searchByKeyword = (e) => {
-    const temp = [...tasks];
-    const res = temp.filter((task) =>
-      task.title.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    selectTasks([...res]);
-  };
-
-  useEffect(() => {
-    fetch("/data")
-      .then((res) => res.json())
-      .then((data) => {
-        setTasks(data);
-        selectTasks(data);
-      });
-  }, []);
-
   return (
     <div>
       <FilterBars
-        applyFilter={applyFilter}
-        selectedFilters={selectedFilters}
         statuses={[0, 1, 2]}
         searchByKeyword={searchByKeyword}
+        applyFilter={applyFilter}
+        selectedFilters={selectedFilters}
       />
       <div className="tasks-list">
-        {selectedTasks.length > 0 &&
-          selectedTasks.map((task) => <SingleTask key={task.id} data={task} />)}
+        {!isLoading &&
+          !activeFilter &&
+          tasksFromStore.map((task) => (
+            <SingleTask key={task.id} data={task} activeFilter={activeFilter} />
+          ))}
+        {activeFilter &&
+          selectedTasks.map((task) => (
+            <SingleTask key={task.id} data={task} activeFilter={activeFilter} />
+          ))}
       </div>
     </div>
   );

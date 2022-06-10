@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { increment } from "../state/reducer";
+import { increment } from "../state/reducers";
 
 function SingleTaskPage() {
   const params = useParams();
