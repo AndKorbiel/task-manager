@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { addTask } from "../state/reducers";
+import { postTask } from "../state/reducers";
 import { useState } from "react";
 
 // material-ui
@@ -31,7 +31,7 @@ function AddNewTask() {
     validate,
     onSubmit: (values, actions) => {
       setSuccess(true);
-      dispatch(addTask(values));
+      dispatch(postTask(values));
       actions.resetForm();
       setTimeout(() => {
         setSuccess(false);

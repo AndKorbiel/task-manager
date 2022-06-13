@@ -1,11 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+const axios = require("axios").default;
 
 export const getTasks = createAsyncThunk("tasks/getTasks", async (thunkAPI) => {
-  const res = await fetch("/data", {
-    method: "GET",
-    mode: "no-cors",
-  });
-  return res.json();
+  const res = await axios.get("/data/getTask").then((res) => res.data);
+  return res;
+});
+
+export const postTask = createAsyncThunk("tasks/postTask", async (newPost) => {
+  const data = await axios
+    .post("/data/addTask", newPost)
+    .then((res) => res.data);
+  return data;
 });
 
 export const tasksSlice = createSlice({
@@ -39,6 +44,9 @@ export const tasksSlice = createSlice({
     },
     [getTasks.rejected]: (state) => {
       state.loading = false;
+    },
+    [postTask.fulfilled]: (state, action) => {
+      state.list.push(action.payload);
     },
   },
 });

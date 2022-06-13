@@ -11,7 +11,10 @@ function Navbar({ links }) {
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {links.map((el) => (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button
+                sx={{ my: 2, color: "white", display: "block" }}
+                key={el.label}
+              >
                 <Link to={el.link}>{el.label}</Link>
               </Button>
             ))}
