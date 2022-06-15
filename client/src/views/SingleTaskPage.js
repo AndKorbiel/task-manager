@@ -11,20 +11,20 @@ function SingleTaskPage() {
   const isLoading = useSelector((state) => state.tasks.loading);
 
   useEffect(() => {
-    console.log(params.id);
     dispatch(getTasks());
   }, []);
 
   const getTaskById = () => {
-    return tasksFromStore.filter((task) => task.id === parseFloat(params.id));
+    return tasksFromStore.filter((task) => task._id === params.id);
   };
 
   return (
     <div>
-      <h2>HelldsaO!</h2>
       <div className="tasks-list">
         {!isLoading &&
-          getTaskById().map((task) => <SingleTaskManager data={task} />)}
+          getTaskById().map((task) => (
+            <SingleTaskManager data={task} key={task._id} />
+          ))}
       </div>
     </div>
   );

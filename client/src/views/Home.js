@@ -70,11 +70,15 @@ function Home() {
         {!isLoading &&
           !activeFilter &&
           tasksFromStore.map((task) => (
-            <SingleTask key={task.id} data={task} activeFilter={activeFilter} />
+            <SingleTask key={task._id} data={task} />
           ))}
         {activeFilter &&
           selectedTasks.map((task) => (
-            <SingleTask key={task.id} data={task} activeFilter={activeFilter} />
+            <SingleTask
+              key={task._id}
+              data={task}
+              activeFilter={activeFilter}
+            />
           ))}
       </div>
     </div>

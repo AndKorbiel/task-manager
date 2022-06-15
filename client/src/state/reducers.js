@@ -13,27 +13,32 @@ export const postTask = createAsyncThunk("tasks/postTask", async (newPost) => {
   return data;
 });
 
+export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
+  const data = await axios
+    .delete("/data/removeTask/", {
+      params: id,
+    })
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+  return data;
+});
+
+export const editTask = createAsyncThunk("tasks/editTask", async (task) => {
+  const data = await axios
+    .put("/data/editTask/", {
+      ...task,
+    })
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+  return data;
+});
+
 export const tasksSlice = createSlice({
   name: "tasks",
   initialState: {
     loading: true,
   },
-  reducers: {
-    addTask: {
-      reducer: (state, action) => {
-        const temp = state.list;
-        temp.push(action.payload);
-        state.list = temp;
-      },
-      prepare: (payload) => {
-        payload.id = 5;
-        return { payload };
-      },
-    },
-    removeTask: (state, action) => {
-      state.list = state.list.filter((el) => el.id !== action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: {
     [getTasks.pending]: (state) => {
       state.loading = true;
@@ -47,6 +52,20 @@ export const tasksSlice = createSlice({
     },
     [postTask.fulfilled]: (state, action) => {
       state.list.push(action.payload);
+    },
+    [deleteTask.fulfilled]: (state, action) => {
+      state.list = state.list.filter((el) => el._id === action.payload._id);
+    },
+    [editTask.fulfilled]: (state, action) => {
+      let temp = [...state.list];
+      temp = temp.map((el) => {
+        if (el._id === action.payload._id) {
+          return action.payload;
+        } else {
+          return el;
+        }
+      });
+      state.list = temp;
     },
   },
 });
