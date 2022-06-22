@@ -3,7 +3,7 @@ import { encodeTaskStatus } from "../utils/encodeTaskStatus";
 
 function SingleTask({ data }) {
   return (
-    <div>
+    <div className="single-task">
       <Link to={"task/" + data._id}>
         <h2>{data.title}</h2>
       </Link>

@@ -10,9 +10,13 @@
   padding: 0 30px;
   margin-top: 30px;
 
-  div {
+  .single-task {
     box-shadow: 1px 1px 4px grey;
     padding: 15px;
+
+    .MuiInputBase-formControl {
+      margin-bottom: 10px;
+    }
   }
 
   img {
